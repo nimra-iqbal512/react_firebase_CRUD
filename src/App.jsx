@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {database} from './config'
-import { addDoc, getDocs, collection } from 'firebase/firestore'
+import { doc, addDoc, getDocs, collection, deleteDoc } from 'firebase/firestore'
+import { data } from 'react-router-dom'
 
 const App = () => {
   const [fname, setFname] = useState('')
@@ -28,6 +29,11 @@ const App = () => {
     //Adding data to Firebase
     await addDoc(value, {fname: fname, lname: lname})
   }
+
+  const handleDelete = async(id)=>{
+    const deleteVal = doc(database, "FirebaseFirestoreReact", id);
+    await deleteDoc(deleteVal)
+  }
   
   return (
     <div className="container">
@@ -47,6 +53,7 @@ const App = () => {
         <div>
           <h1>{values.fname}</h1>
           <h1>{values.lname}</h1>
+          <button onClick={()=>handleDelete(values.id)}>Delele</button>
         </div>
       ))}
     </div>
